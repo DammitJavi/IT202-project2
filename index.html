@@ -16,10 +16,12 @@ canvas {
 var myMovingPiece;
 var myOtherPieces;
 var myScore;
+var message;
 var myBackground;
 
 function startGame(){
 	myGameArea.start();
+	message = new component ("20px", "Consolas", "white", 150, 20, "text");
 	myBackground = new component(500, 500, "space.jpg", 0, 0, "image");
 	myScore = new component("20px", "Consolas", "white", 350, 20 , "text");
 	myMovingPiece = new component(25,25 , "space_ship.png", 10, 120,"image");
@@ -27,6 +29,7 @@ function startGame(){
 	myOtherPieces1 = new component(20, 20, "asteroid.png", 500, 150,"image");
 	myOtherPieces2 = new component(20, 20, "asteroid.png", 500, 300,"image");
 	myOtherPieces3 = new component(20, 20, "asteroid.png", 500, 450,"image");
+	goodPiece = new component(20, 25, "oil_barrel.jpeg", 500, 120,"image");
 }
 
 var myGameArea = {
@@ -120,6 +123,10 @@ function updateGameArea(){
 	else{
 		myGameArea.clear();
 		myGameArea.frameNo += 1;
+		goodPiece.x -= 1;
+		if(goodPiece.x == 0 -goodPiece.width){
+			goodPiece.x = 500;
+		}
 		myOtherPieces.x -= 2.5;
 		if(myOtherPieces.x == 0 - myOtherPieces.width){
 			myOtherPieces.x = 500;
@@ -142,10 +149,17 @@ function updateGameArea(){
 		myScore.update();
 		myMovingPiece.newPos();
 		myMovingPiece.update();
+		goodPiece.update();
 		myOtherPieces.update();
 		myOtherPieces1.update();
 		myOtherPieces2.update();
 		myOtherPieces3.update();
+		
+		if(myMovingPiece.x == goodPiece.x && myMovingPiece.y == goodPiece.y){
+			message.text = "1000+ points!";
+			message.update();
+			myGameArea.frameNo += 1000;
+		}
 	}
 
 }
